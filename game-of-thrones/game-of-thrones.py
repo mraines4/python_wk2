@@ -98,7 +98,7 @@ def Targaryens(char_list):
             targaryen_list.append(person['name'])
     return targaryen_list
 
-# print(Targaryens(characters))
+print(Targaryens(characters))
 
 # Create a histogram of the houses (it's the "allegiances" key)
 
@@ -129,7 +129,7 @@ def allegiances(char_list, house_list):
 # print(allegiances(characters, houses))
 
 ##############################################
-#########chris version of histogram###########
+###############chris version #################
 ##############################################
 
 ####### Create a histogram of the houses (it's the "allegiances" key) #######
@@ -178,6 +178,45 @@ def convert_to_nice_names(histogram):
 
 # print(translate_address_to_house_name('https://www.anapioficeandfire.com/api/houses/348'))
 
-ugly_histogram = make_house_histogram(characters)
-pretty_histogram = convert_to_nice_names(ugly_histogram)
-pretty_print_histogram(pretty_histogram)
+# ugly_histogram = make_house_histogram(characters)
+# pretty_histogram = convert_to_nice_names(ugly_histogram)
+# pretty_print_histogram(pretty_histogram)
+
+#################################
+# who has the most titles
+
+# lets assume that we have seen no titles yet  
+most_titles = 0
+person_with_most_titles = ''
+
+# visit each character and see if they have more titles than `most_titles`
+for person in characters:
+    num_titles = len(person['titles'])
+    if num_titles > most_titles:
+        most_titles = num_titles
+        person_with_most_titles = person['name']
+
+# print out hte names of each person with same number of titles as `most_titles`
+for person in characters:
+    num_titles = len(person["titles"])
+    if num_titles == most_titles:
+        print("%s has %d titles" % (person_with_most_titles, most_titles))
+
+# if so, save that new value to `most_titles`
+# if not, ignore them
+
+# print("%s has %d titles" % (person_with_most_titles, most_titles))
+
+#################################
+
+# who are the top 10 title holders?
+
+# how do i sort a list of dictionaries?
+
+# what do I expect/hope for?
+# [{
+#   name: "Balon Greyjoy", titles: [dfsfdsf]
+# },
+    # name2-10: dsfdsfs
+# }
+# ]
