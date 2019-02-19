@@ -1,3 +1,7 @@
+import requests # makes API requests (this is a third-party module)
+import json # convert the API data into python dictionaries and arrays
+import time # module for working with timestamps
+
 from characters import characters
 from houses import houses
 # print(len(characters))
@@ -94,7 +98,7 @@ def Targaryens(char_list):
             targaryen_list.append(person['name'])
     return targaryen_list
 
-print(Targaryens(characters))
+# print(Targaryens(characters))
 
 # Create a histogram of the houses (it's the "allegiances" key)
 
@@ -122,5 +126,58 @@ def allegiances(char_list, house_list):
                 new_freq[houses[key]] = frequency[old_key]
     return new_freq
 
-print(allegiances(characters, houses))
+# print(allegiances(characters, houses))
 
+##############################################
+#########chris version of histogram###########
+##############################################
+
+####### Create a histogram of the houses (it's the "allegiances" key) #######
+
+# count the number of people who are part of a house
+def make_house_histogram(character_list):
+    histogram = {}
+
+    # do the thing
+    # loop through all the characters
+    for person in character_list:
+
+        # what do I check for each person?
+        allegiances = person['allegiances']
+        # allegiances is a list of URLs
+        for house in allegiances:
+            # do something with that house
+            if house in histogram:
+                histogram[house] += 1
+            else:
+                histogram[house] = 1
+
+    return histogram
+
+
+def pretty_print_histogram(histogram):
+    for house in histogram:
+        print("%s has %d members" % (house, histogram[house]))
+
+def translate_address_to_house_name(URL):
+    house_name = ''
+    r = requests.get(URL)
+    house_info = r.json()
+    house_name = house_info['name']
+    return house_name
+
+def convert_to_nice_names(histogram):
+    nice_histogram = {}
+
+    for url in histogram:
+        house_name = translate_address_to_house_name(url)
+        nice_histogram[house_name] = histogram[url]
+        time.sleep(0.1)
+
+    return nice_histogram
+
+# print(translate_address_to_house_name('https://www.anapioficeandfire.com/api/houses/348'))
+
+ugly_histogram = make_house_histogram(characters)
+pretty_histogram = convert_to_nice_names(ugly_histogram)
+pretty_print_histogram(pretty_histogram)
